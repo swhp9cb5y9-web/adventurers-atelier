@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171914">
+  <title>Melor — 5e Character Workshop</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">✦</div>
+    <div class="brand"><strong>ADVENTURER'S ATELIER</strong><span>5E CHARACTER WORKSHOP</span></div>
+    <div class="rules-pill">2014 RULESET <i></i></div>
+  </header>
+  <main class="shell">
+    <aside class="sidebar">
+      <div class="campaign-label">WORKSPACE <span>PERSONAL</span></div>
+      <button class="nav active" data-view="character">◈ <span>Character sheet</span></button>
+      <button class="nav" data-view="equipment">⚒ <span>Equipment workshop</span></button>
+      <button class="nav" data-view="art">✧ <span>Character art prompt</span></button>
+      <div class="sidebar-bottom">
+        <div class="save-status"><span class="status-dot"></span><span id="saveStatus">Saved locally</span></div>
+        <button class="subtle-btn" id="exportBtn">⇧ Export backup</button>
+        <label class="subtle-btn import-label">⇩ Import backup<input type="file" id="importFile" accept="application/json"></label>
+        <p>Personal workspace · Data stays in this browser.</p>
+      </div>
+    </aside>
+    <section class="content">
+      <div class="page-heading">
+        <div><div class="eyebrow">YOUR ADVENTURE STARTS HERE</div><h1 id="pageTitle">Character sheet</h1><p id="pageSubtitle">Build your hero. The numbers take care of themselves.</p></div>
+        <div class="heading-actions"><button class="button secondary" id="duplicateBtn">⧉ Duplicate</button><button class="button primary" id="newBtn">＋ New character</button></div>
+      </div>
+      <div id="view-character" class="view">
+        <div class="hero-card">
+          <div class="hero-text"><div class="eyebrow light">CHARACTER PROFILE · 2014 D&D 5E</div><input class="hero-name" id="name" value="New Adventurer" aria-label="Character name"><div class="hero-meta"><span id="levelLabel">LEVEL 1</span><span>•</span><span id="classLabel">Fighter</span><span>•</span><span id="raceLabel">Human</span></div></div>
+          <div class="hero-seal">✦</div>
+        </div>
+        <div class="section-title"><div><h2>Identity & progression</h2><p>Your character's foundations</p></div><span class="source-tag">PHB · 2014</span></div>
+        <div class="panel identity-grid">
+          <label>Character name<input id="name2" value="New Adventurer"></label>
+          <label>Race<select id="race"><option>Human</option><option>Variant Human</option><option>Dwarf</option><option>Elf</option><option>Halfling</option><option>Dragonborn</option><option>Gnome</option><option>Half-Elf</option><option>Half-Orc</option><option>Tiefling</option></select></label>
+          <label>Class<select id="class"><option>Fighter</option><option>Barbarian</option><option>Bard</option><option>Cleric</option><option>Druid</option><option>Monk</option><option>Paladin</option><option>Ranger</option><option>Rogue</option><option>Sorcerer</option><option>Warlock</option><option>Wizard</option></select></label>
+          <label>Background<input id="background" value="Folk Hero" placeholder="e.g. Folk Hero"></label>
+          <label>Level <div class="stepper"><button id="levelDown" aria-label="Decrease level">−</button><strong id="levelValue">1</strong><button id="levelUp" aria-label="Increase level">＋</button></div></label>
+          <label>Subclass<input id="subclass" placeholder="Choose when available"></label>
+          <label class="wide">Character description<textarea id="description" rows="2" placeholder="Appearance, personality, history…"></textarea></label>
+        </div>
+        <div class="section-title"><div><h2>Ability scores</h2><p>Change a score to recalculate modifiers and checks</p></div><span class="micro-note">Modifier = floor((score − 10) ÷ 2)</span></div>
+        <div class="ability-grid" id="abilities"></div>
+        <div class="section-title"><div><h2>Combat overview</h2><p>Calculated from your current ability scores and level</p></div></div>
+        <div class="stat-grid">
+          <div class="stat-card"><span>ARMOUR CLASS</span><strong id="ac">11</strong><small id="acNote">Unarmoured baseline</small></div>
+          <div class="stat-card"><span>HIT POINTS</span><strong id="hp">10</strong><small id="hpNote">Estimated · class hit die</small></div>
+          <div class="stat-card"><span>INITIATIVE</span><strong id="initiative">+0</strong><small>Dexterity modifier</small></div>
+          <div class="stat-card"><span>PROFICIENCY</span><strong id="prof">+2</strong><small>Based on total character level</small></div>
+          <div class="stat-card"><span>SPEED</span><strong id="speed">30 ft</strong><small>Race baseline · verify traits</small></div>
+          <div class="stat-card"><span>PASSIVE PERCEPTION</span><strong id="perception">10</strong><small>10 + Wisdom modifier</small></div>
+        </div>
+        <div class="section-title"><div><h2>Skills & saving throws</h2><p>Choose proficiencies to see calculated bonuses</p></div></div>
+        <div class="panel checks-panel">
+          <div><h3>Saving throws</h3><div id="saves" class="check-list"></div></div>
+          <div><h3>Skills</h3><div id="skills" class="check-list skills-list"></div></div>
+        </div>
+        <div class="notice"><strong>Rules accuracy note</strong><p>This first version implements core ability modifiers, level-based proficiency, selectable skill/save proficiency, a basic AC baseline, and hit-point estimates. It does <b>not</b> yet automatically implement every racial trait, class feature, feat, armour formula, spell rule, or multiclass rule. Confirm those before using this as an authoritative rules sheet.</p></div>
+      </div>
+      <div id="view-equipment" class="view hidden">
+        <div class="section-title"><div><h2>Equipment workshop</h2><p>Create reusable custom weapons from structured base-item data.</p></div><span class="source-tag">PHB · 2014 BASES</span></div>
+        <div class="workshop-layout">
+          <div class="panel form-panel">
+            <h3>Forge an item</h3>
+            <label>Base weapon<select id="weaponBase"></select></label>
+            <label>Enhancement bonus<select id="enhancement"><option value="0">+0 · Mundane</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3</option></select></label>
+            <label>Additional damage type<select id="extraType"><option value="">None</option><option>Acid</option><option>Cold</option><option>Fire</option><option>Lightning</option><option>Thunder</option><option>Poison</option><option>Psychic</option><option>Necrotic</option><option>Radiant</option><option>Force</option><option>Bludgeoning</option><option>Piercing</option><option>Slashing</option></select></label>
+            <label>Additional damage die<select id="extraDie"><option value="">None</option><option>d4</option><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></label>
+            <label>Custom properties<textarea id="itemProperties" rows="2" placeholder="Optional description or homebrew effect"></textarea></label>
+            <label>Item name<input id="itemName" placeholder="Generated name — editable"></label>
+            <div class="preview-box" id="itemPreview"></div>
+            <button class="button primary full" id="saveItemBtn">＋ Save to equipment library</button>
+          </div>
+          <div>
+            <div class="panel"><div class="panel-head"><h3>Saved equipment library</h3><span id="itemCount" class="count">0 ITEMS</span></div><div id="itemLibrary" class="item-library"></div></div>
+            <div class="panel inventory-panel"><div class="panel-head"><h3>Character inventory</h3><span class="micro-note">Prototype slots</span></div><div id="inventory"></div><p class="micro-note">Custom slots are a website convenience, not official 2014 equipment-slot rules. Equipped item effects are not yet applied automatically.</p></div>
+          </div>
+        </div>
+      </div>
+      <div id="view-art" class="view hidden">
+        <div class="section-title"><div><h2>Character art prompt</h2><p>Turn your character details into a prompt for an external image generator.</p></div><span class="source-tag">CREATIVE TOOL</span></div>
+        <div class="art-layout">
+          <div class="panel form-panel"><h3>Visual direction</h3>
+            <label>Art style<select id="artStyle"><option>Highly detailed, photorealistic fantasy CGI</option><option>Painterly high-fantasy illustration</option><option>Classic tabletop RPG book illustration</option><option>Stylised 3D game character render</option><option>Moody dark-fantasy concept art</option></select></label>
+            <label>Physical appearance<textarea id="appearance" rows="4" placeholder="Hair, eyes, build, age, skin, scars…"></textarea></label>
+            <label>Clothing, gear & colours<textarea id="visualGear" rows="4" placeholder="Armour, weapons, materials, colour palette…"></textarea></label>
+            <label>Pose & setting<textarea id="setting" rows="3" placeholder="Pose, environment, lighting, atmosphere…"></textarea></label>
+            <button class="button primary full" id="generatePrompt">✧ Generate prompt</button>
+          </div>
+          <div class="panel prompt-panel"><div class="panel-head"><h3>Generated prompt</h3><span class="source-tag">EDITABLE</span></div><textarea id="promptOutput" rows="16" placeholder="Your prompt will appear here. You can edit it before copying."></textarea><button class="button secondary full" id="copyPrompt">Copy prompt</button><div class="upload-area"><label for="characterImage" class="upload-label">＋ Upload character artwork</label><input id="characterImage" type="file" accept="image/*"><p>Artwork is stored in this browser. Large images may use substantial local storage.</p><div id="imagePreview"></div></div></div>
+        </div>
+      </div>
+      <footer>ADVENTURER'S ATELIER <span>Unofficial personal tool · D&D 5e 2014 baseline · Homebrew clearly labelled</span></footer>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
